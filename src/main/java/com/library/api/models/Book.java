@@ -18,7 +18,11 @@ public class Book {
     private long id;
     private String title;
     @ManyToOne
+<<<<<<< HEAD
     @JoinColumn(name = "category_id")
+=======
+    @JoinColumn(name="category_id")
+>>>>>>> 618aae9 (init)
     private Category category;
     @ManyToOne
     @JoinColumn(name = "author_id")
