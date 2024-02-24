@@ -9,6 +9,7 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
+	targetCompatibility = '17'
 }
 
 configurations {
@@ -22,11 +23,18 @@ repositories {
 }
 
 dependencies {
+	// Spring Boot dependencies
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Lombok (for cleaner code)
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// PostgreSQL driver
+	runtimeOnly 'org.postgresql:postgresql'
+
+	// Testing dependencies
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
