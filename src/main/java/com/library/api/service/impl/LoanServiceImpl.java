@@ -1,17 +1,8 @@
 package com.library.api.service.impl;
 
-<<<<<<< HEAD
 import com.library.api.dto.LoanDto;
 import com.library.api.dto.LoanResponse;
 import com.library.api.exceptions.AuthorNotFoundException;
-=======
-import com.library.api.dto.BookDto;
-import com.library.api.dto.BookResponse;
-import com.library.api.dto.LoanDto;
-import com.library.api.dto.LoanResponse;
-import com.library.api.exceptions.AuthorNotFoundException;
-import com.library.api.models.Book;
->>>>>>> 618aae9 (init)
 import com.library.api.models.BookCopy;
 import com.library.api.models.Loan;
 import com.library.api.models.User;
@@ -28,6 +19,7 @@ import java.util.List;
 
 @Service
 public class LoanServiceImpl implements LoanService {
+
     private final LoanRepository loanRepository;
     private final UserRepository userRepository;
     private final BookCopyRepository bookCopyRepository;
@@ -40,14 +32,17 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public LoanDto getLoanById(long id) {
-        Loan loan = loanRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException("Loan not found."));
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new AuthorNotFoundException("Loan not found."));
         return LoanDto.LoanDtoBuilder.fromLoan(loan);
     }
 
     @Override
     public LoanDto createLoan(LoanDto loanDto) {
-        User user = userRepository.findById(loanDto.getUserId()).orElseThrow(() -> new AuthorNotFoundException("User not found."));
-        BookCopy bookCopy = bookCopyRepository.findById(loanDto.getBookCopyId()).orElseThrow(() -> new AuthorNotFoundException("Book copy not found."));
+        User user = userRepository.findById(loanDto.getUserId())
+                .orElseThrow(() -> new AuthorNotFoundException("User not found."));
+        BookCopy bookCopy = bookCopyRepository.findById(loanDto.getBookCopyId())
+                .orElseThrow(() -> new AuthorNotFoundException("Book copy not found."));
 
         Loan loan = Loan.builder()
                 .start_time(loanDto.getStart_time())
@@ -56,13 +51,15 @@ public class LoanServiceImpl implements LoanService {
                 .user(user)
                 .bookCopy(bookCopy)
                 .build();
+
         Loan saved = loanRepository.save(loan);
         return LoanDto.LoanDtoBuilder.fromLoan(saved);
     }
 
     @Override
     public LoanDto returnLoan(long id) {
-        Loan loan = loanRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException("Loan not found."));
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(() -> new AuthorNotFoundException("Loan not found."));
         loan.set_returned(true);
         Loan saved = loanRepository.save(loan);
         return LoanDto.LoanDtoBuilder.fromLoan(saved);
@@ -73,8 +70,7 @@ public class LoanServiceImpl implements LoanService {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         Page<Loan> page = loanRepository.findAll(pageable);
 
-        List<LoanDto> allLoans = page
-                .getContent()
+        List<LoanDto> allLoans = page.getContent()
                 .stream()
                 .map(LoanDto.LoanDtoBuilder::fromLoan)
                 .toList();

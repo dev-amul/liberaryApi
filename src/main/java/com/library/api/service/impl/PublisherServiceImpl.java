@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PublisherServiceImpl implements PublisherService {
+
     private final PublisherRepository publisherRepository;
 
     public PublisherServiceImpl(PublisherRepository publisherRepository) {
@@ -17,16 +18,17 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     public PublisherDto createPublisher(PublisherDto publisherDto) {
-        Publisher new_publisher = Publisher.builder()
+        Publisher newPublisher = Publisher.builder()
                 .name(publisherDto.getName())
                 .build();
-        Publisher saved = publisherRepository.save(new_publisher);
-        return PublisherDto.PublisherDtoBuilder.fromPublisher(saved);
+        Publisher savedPublisher = publisherRepository.save(newPublisher);
+        return PublisherDto.PublisherDtoBuilder.fromPublisher(savedPublisher);
     }
 
     @Override
     public PublisherDto getPublisherById(long id) {
-        Publisher publisher = publisherRepository.findById(id).orElseThrow(() -> new AuthorNotFoundException("Publisher not found"));
+        Publisher publisher = publisherRepository.findById(id)
+                .orElseThrow(() -> new AuthorNotFoundException("Publisher with ID " + id + " not found."));
         return PublisherDto.PublisherDtoBuilder.fromPublisher(publisher);
     }
 }
